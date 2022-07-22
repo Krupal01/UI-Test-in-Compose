@@ -1,9 +1,11 @@
 package com.example.composetesting
 
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -54,6 +56,7 @@ fun DefaultPreview() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun MainScreen(
     modifier : Modifier = Modifier,
@@ -63,6 +66,9 @@ fun MainScreen(
     val context = LocalContext.current
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val date = remember { mutableStateOf(0) }
+    val month = remember { mutableStateOf(0) }
+    val year = remember { mutableStateOf(0) }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -89,6 +95,7 @@ fun MainScreen(
                 .fillMaxWidth()
                 .testTag(TEST_TAG_PASSWORD)
         )
+        DatePicker(date = date, month = month, year = year , modifier = Modifier.testTag(TEST_TAG_DATE_PICKER))
         Button(
             onClick = {
                 Toast.makeText(context, TOAST_MSG,Toast.LENGTH_LONG).show()

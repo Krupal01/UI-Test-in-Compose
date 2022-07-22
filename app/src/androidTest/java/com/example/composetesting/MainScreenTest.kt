@@ -10,9 +10,11 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Root
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.contrib.PickerActions
+import androidx.test.espresso.matcher.ViewMatchers.*
 import com.example.composetesting.ui.theme.ComposeTestingTheme
+import org.hamcrest.Matcher
+import org.hamcrest.Matchers
 import org.hamcrest.TypeSafeMatcher
 import org.junit.Before
 import org.junit.Rule
@@ -57,8 +59,19 @@ class MainScreenTest {
 
     @Test
     fun toastTest(){
+        mainScreenRule.onNodeWithTag(TEST_TAG_SUBMIT).performClick()
         Espresso.onView(withText(TOAST_MSG)).inRoot(ToastMatcher())
             .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun datePickerTest(){
+        val btnDatePicker = mainScreenRule.onNodeWithTag(TEST_TAG_DATE_PICKER)
+        btnDatePicker.assertIsDisplayed()
+        btnDatePicker.performClick()
+        Espresso
+            .onView(withClassName(Matchers.equalTo(android.widget.DatePicker::class.java.name)))
+            .perform(PickerActions.setDate(2022, 7, 22))
     }
 }
 
