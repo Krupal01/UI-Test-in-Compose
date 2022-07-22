@@ -1,6 +1,7 @@
 package com.example.composetesting
 
 import android.os.IBinder
+import android.util.Log
 import android.view.WindowManager
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
@@ -27,7 +28,8 @@ class MainScreenTest {
         mainScreenRule.setContent {
             ComposeTestingTheme {
                 MainScreen(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
+                    navigateTo = {route ->  Log.i("TAG",route)}
                 )
             }
         }

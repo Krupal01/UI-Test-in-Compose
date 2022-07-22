@@ -17,6 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.composetesting.navigation.MainNavHost
+import com.example.composetesting.navigation.Screens
 import com.example.composetesting.ui.theme.ComposeTestingTheme
 
 const val TEST_TAG_COLUMN = "TEST TAG COLUMN"
@@ -31,9 +35,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeTestingTheme {
-                    MainScreen(
-                        modifier = Modifier.fillMaxSize()
-                    )
+                MainNavHost()
             }
         }
     }
@@ -54,14 +56,17 @@ fun DefaultPreview() {
 
 @Composable
 fun MainScreen(
-    modifier : Modifier = Modifier
+    modifier : Modifier = Modifier,
+    navigateTo : (route : String)->Unit
 ) {
 
     val context = LocalContext.current
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     Column(
-        modifier = modifier.testTag(TEST_TAG_COLUMN),
+        modifier = modifier
+            .fillMaxSize()
+            .testTag(TEST_TAG_COLUMN),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -84,11 +89,26 @@ fun MainScreen(
                 .fillMaxWidth()
                 .testTag(TEST_TAG_PASSWORD)
         )
-        Button(onClick = {
-            Toast.makeText(context, TOAST_MSG,Toast.LENGTH_LONG).show()
-        }, modifier = Modifier.testTag(TEST_TAG_SUBMIT)) {
+        Button(
+            onClick = {
+                Toast.makeText(context, TOAST_MSG,Toast.LENGTH_LONG).show()
+                navigateTo(Screens.secondscreen.route)
+            },
+            modifier = Modifier.testTag(TEST_TAG_SUBMIT)
+        ) {
             Text(text = "Submit")
         }
 
+    }
+}
+
+@Composable
+fun SecondScreen() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(text = "Screen 2")
     }
 }
